@@ -1,0 +1,6 @@
+{
+  "name": "خدمة الشمامسة",
+  "description": "خدمة الشهيد استفانوس للشمامسة - كنيستا العزب وأبي سيفين ودير الملاك بمير - إدارة المخدومين والغياب والألحان والافتقاد والكارنيهات",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
