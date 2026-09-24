@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -89,9 +90,18 @@ class DeaconsViewModel(
         list.filter { it.isApproved }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    // Visible Deacons: Restricted to servant's assigned grade if the user is not an Admin
+    val visibleDeacons: StateFlow<List<Deacon>> = combine(deacons, currentServant) { list, servant ->
+        if (servant != null && servant.role != ServantRole.ADMIN && servant.assignedGrade != null) {
+            list.filter { it.grade == servant.assignedGrade }
+        } else {
+            list
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     // Filtered and Sorted Deacons
     val filteredDeacons: StateFlow<List<Deacon>> = combine(
-        deacons,
+        visibleDeacons,
         _searchQuery,
         _sortOrder,
         attendanceRecords,
@@ -131,13 +141,13 @@ class DeaconsViewModel(
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    // Incomplete data deacons
-    val incompleteDeacons: StateFlow<List<Deacon>> = deacons.combine(MutableStateFlow(Unit)) { list, _ ->
+    // Incomplete data deacons (filtered for current servant's class)
+    val incompleteDeacons: StateFlow<List<Deacon>> = visibleDeacons.map { list ->
         list.filter { it.isDataIncomplete }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     // Smart Geographic Grouping (Governorate -> District -> Area -> Street -> sorted by Building number)
-    val visitationGroups: StateFlow<List<VisitationGroup>> = deacons.combine(MutableStateFlow(Unit)) { list, _ ->
+    val visitationGroups: StateFlow<List<VisitationGroup>> = visibleDeacons.combine(MutableStateFlow(Unit)) { list, _ ->
         list.filter { it.street.isNotBlank() }
             .groupBy { "${it.governorate}|${it.district}|${it.area}|${it.street}" }
             .map { (_, deaconsOnStreet) ->
@@ -289,9 +299,15 @@ class DeaconsViewModel(
     }
 
     fun importDeaconsForGrade(grade: DeaconGrade, lines: List<String>): Int {
-        val count = repository.importDeaconsForGrade(grade, lines)
+        val servant = currentServant.value
+        val effectiveGrade = if (servant != null && servant.role != ServantRole.ADMIN && servant.assignedGrade != null) {
+            servant.assignedGrade
+        } else {
+            grade
+        }
+        val count = repository.importDeaconsForGrade(effectiveGrade, lines)
         if (count > 0) {
-            _userMessage.value = "تم استيراد $count شماس بنجاح لفصل ${grade.arabicTitle}"
+            _userMessage.value = "تم استيراد $count شماس بنجاح لفصل ${effectiveGrade.arabicTitle}"
         } else {
             _userMessage.value = "لم يتم استيراد أي شماس جديد (ربما الأسماء مكررة أو فارغة)"
         }
@@ -299,9 +315,20 @@ class DeaconsViewModel(
     }
 
     fun importDeaconsDirectly(grade: DeaconGrade, deaconsList: List<Deacon>): Int {
-        val count = repository.importDeaconsList(deaconsList)
+        val servant = currentServant.value
+        val effectiveGrade = if (servant != null && servant.role != ServantRole.ADMIN && servant.assignedGrade != null) {
+            servant.assignedGrade
+        } else {
+            grade
+        }
+        val finalDeacons = if (servant != null && servant.role != ServantRole.ADMIN && servant.assignedGrade != null) {
+            deaconsList.map { it.copy(grade = effectiveGrade) }
+        } else {
+            deaconsList
+        }
+        val count = repository.importDeaconsList(finalDeacons)
         if (count > 0) {
-            _userMessage.value = "تم استيراد $count شماس من ملف الإكسيل بنجاح لفصل ${grade.arabicTitle}"
+            _userMessage.value = "تم استيراد $count شماس من ملف الإكسيل بنجاح لفصل ${effectiveGrade.arabicTitle}"
         } else {
             _userMessage.value = "لم يتم استيراد أي شماس جديد (ربما البيانات مكررة أو فارغة)"
         }
@@ -310,9 +337,15 @@ class DeaconsViewModel(
 
     // --- Deacons Actions ---
     fun saveDeacon(deacon: Deacon): Boolean {
-        val success = repository.saveDeacon(deacon)
+        val servant = currentServant.value
+        val deaconToSave = if (servant != null && servant.role != ServantRole.ADMIN && servant.assignedGrade != null) {
+            deacon.copy(grade = servant.assignedGrade)
+        } else {
+            deacon
+        }
+        val success = repository.saveDeacon(deaconToSave)
         if (success) {
-            _userMessage.value = "تم حفظ بيانات الشماس ${deacon.name} وتحديث السحابة بنجاح"
+            _userMessage.value = "تم حفظ بيانات الشماس ${deaconToSave.name} وتحديث السحابة بنجاح"
         } else {
             _userMessage.value = "عفواً، ليس لديك صلاحية تعديل بيانات المخدومين"
         }

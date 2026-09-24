@@ -344,9 +344,17 @@ class DeaconCloudRepository(
     fun markAllPresentForDate(date: String, isService: Boolean, isMass: Boolean) {
         if (_currentServant.value?.canTakeAttendance != true) return
         val servantName = _currentServant.value?.name ?: "الخادم"
-        val current = _attendance.value.filter { it.date != date }.toMutableList()
+        val servant = _currentServant.value
+        val isRestricted = servant?.role != ServantRole.ADMIN && servant?.assignedGrade != null
+        val targetDeacons = if (isRestricted) {
+            _deacons.value.filter { it.grade == servant?.assignedGrade }
+        } else {
+            _deacons.value
+        }
+        val targetDeaconIds = targetDeacons.map { it.id }.toSet()
+        val current = _attendance.value.filter { it.date != date || !targetDeaconIds.contains(it.deaconId) }.toMutableList()
         val newRecords = mutableListOf<AttendanceRecord>()
-        for (deacon in _deacons.value) {
+        for (deacon in targetDeacons) {
             val rec = AttendanceRecord(
                 deaconId = deacon.id,
                 date = date,

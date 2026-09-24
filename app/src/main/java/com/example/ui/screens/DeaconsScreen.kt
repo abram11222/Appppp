@@ -77,6 +77,8 @@ import com.example.model.AttendanceRecord
 import com.example.model.Deacon
 import com.example.model.DeaconGrade
 import com.example.model.DeaconRank
+import com.example.model.ServantAccount
+import com.example.model.ServantRole
 import com.example.ui.components.DeaconAvatar
 import com.example.ui.components.MissingDataBanner
 import com.example.ui.components.RankBadge
@@ -92,6 +94,7 @@ import com.example.viewmodel.DeaconSortOrder
 fun DeaconsScreen(
     deacons: List<Deacon>,
     allDeacons: List<Deacon> = deacons,
+    currentServant: ServantAccount? = null,
     attendanceList: List<AttendanceRecord>,
     searchQuery: String,
     sortOrder: DeaconSortOrder,
@@ -112,6 +115,11 @@ fun DeaconsScreen(
     var showSortMenu by remember { mutableStateOf(false) }
     var deaconToEdit by remember { mutableStateOf<Deacon?>(null) }
     var isCreatingNew by remember { mutableStateOf(false) }
+
+    val isRestrictedServant = currentServant != null &&
+            currentServant.role != ServantRole.ADMIN &&
+            currentServant.assignedGrade != null
+    val servantGrade = currentServant?.assignedGrade
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -193,68 +201,100 @@ fun DeaconsScreen(
                     .padding(horizontal = 12.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                LazyRow(
-                    modifier = Modifier.weight(1f),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // "All" chip
-                    item {
-                        val isAllSelected = selectedGrade == null
-                        Surface(
-                            shape = RoundedCornerShape(10.dp),
-                            color = if (isAllSelected) ModernPrimary else MaterialTheme.colorScheme.surfaceVariant,
-                            border = androidx.compose.foundation.BorderStroke(
-                                1.dp,
-                                if (isAllSelected) ModernPrimary else Color(0xFFE2E8F0)
-                            ),
-                            modifier = Modifier
-                                .clickable { onGradeChange(null) }
-                                .testTag("filter_all_grades")
+                if (isRestrictedServant && servantGrade != null) {
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = ModernPrimary,
+                        border = androidx.compose.foundation.BorderStroke(1.dp, ModernPrimary),
+                        modifier = Modifier
+                            .weight(1f)
+                            .testTag("servant_assigned_grade_chip")
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = "كل الفصول (${allDeacons.size})",
-                                    style = MaterialTheme.typography.bodySmall.copy(
-                                        fontWeight = if (isAllSelected) FontWeight.Bold else FontWeight.Medium,
-                                        color = if (isAllSelected) Color.White else MaterialTheme.colorScheme.onSurface,
-                                        fontSize = 11.sp
-                                    )
+                            Icon(
+                                imageVector = Icons.Default.School,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "فصلك المخصص: ${servantGrade.arabicTitle} (${allDeacons.size} شماس)",
+                                style = MaterialTheme.typography.bodySmall.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White,
+                                    fontSize = 12.sp
                                 )
-                            }
+                            )
                         }
                     }
-
-                    // Chips for each grade
-                    items(DeaconGrade.values()) { grade ->
-                        val isSelected = selectedGrade == grade
-                        val countInGrade = allDeacons.count { it.grade == grade }
-                        Surface(
-                            shape = RoundedCornerShape(10.dp),
-                            color = if (isSelected) ModernPrimary else MaterialTheme.colorScheme.surfaceVariant,
-                            border = androidx.compose.foundation.BorderStroke(
-                                1.dp,
-                                if (isSelected) ModernPrimary else Color(0xFFE2E8F0)
-                            ),
-                            modifier = Modifier
-                                .clickable { onGradeChange(grade) }
-                                .testTag("filter_grade_${grade.name}")
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                } else {
+                    LazyRow(
+                        modifier = Modifier.weight(1f),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // "All" chip
+                        item {
+                            val isAllSelected = selectedGrade == null
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = if (isAllSelected) ModernPrimary else MaterialTheme.colorScheme.surfaceVariant,
+                                border = androidx.compose.foundation.BorderStroke(
+                                    1.dp,
+                                    if (isAllSelected) ModernPrimary else Color(0xFFE2E8F0)
+                                ),
+                                modifier = Modifier
+                                    .clickable { onGradeChange(null) }
+                                    .testTag("filter_all_grades")
                             ) {
-                                Text(
-                                    text = "${grade.arabicTitle} ($countInGrade)",
-                                    style = MaterialTheme.typography.bodySmall.copy(
-                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                                        color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurface,
-                                        fontSize = 11.sp
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "كل الفصول (${allDeacons.size})",
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            fontWeight = if (isAllSelected) FontWeight.Bold else FontWeight.Medium,
+                                            color = if (isAllSelected) Color.White else MaterialTheme.colorScheme.onSurface,
+                                            fontSize = 11.sp
+                                        )
                                     )
-                                )
+                                }
+                            }
+                        }
+
+                        // Chips for each grade
+                        items(DeaconGrade.values()) { grade ->
+                            val isSelected = selectedGrade == grade
+                            val countInGrade = allDeacons.count { it.grade == grade }
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = if (isSelected) ModernPrimary else MaterialTheme.colorScheme.surfaceVariant,
+                                border = androidx.compose.foundation.BorderStroke(
+                                    1.dp,
+                                    if (isSelected) ModernPrimary else Color(0xFFE2E8F0)
+                                ),
+                                modifier = Modifier
+                                    .clickable { onGradeChange(grade) }
+                                    .testTag("filter_grade_${grade.name}")
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = "${grade.arabicTitle} ($countInGrade)",
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                            color = if (isSelected) Color.White else MaterialTheme.colorScheme.onSurface,
+                                            fontSize = 11.sp
+                                        )
+                                    )
+                                }
                             }
                         }
                     }
@@ -268,7 +308,7 @@ fun DeaconsScreen(
                     color = ModernPrimaryContainer,
                     border = androidx.compose.foundation.BorderStroke(1.dp, ModernPrimary.copy(alpha = 0.3f)),
                     modifier = Modifier
-                        .clickable { onOpenImportDialog(selectedGrade ?: DeaconGrade.PRIMARY_1) }
+                        .clickable { onOpenImportDialog(if (isRestrictedServant && servantGrade != null) servantGrade else (selectedGrade ?: DeaconGrade.PRIMARY_1)) }
                         .testTag("import_class_button")
                 ) {
                     Row(
@@ -489,16 +529,19 @@ fun DeaconsScreen(
 
     // Add / Edit Modal Dialog
     if (isCreatingNew || deaconToEdit != null) {
-        val initial = deaconToEdit ?: Deacon(grade = selectedGrade ?: DeaconGrade.PRIMARY_1)
+        val initialGrade = if (isRestrictedServant && servantGrade != null) servantGrade else (selectedGrade ?: DeaconGrade.PRIMARY_1)
+        val initial = deaconToEdit ?: Deacon(grade = initialGrade)
         DeaconEditorDialog(
             deacon = initial,
             isNew = isCreatingNew,
+            isGradeLocked = isRestrictedServant && servantGrade != null,
             onDismiss = {
                 isCreatingNew = false
                 deaconToEdit = null
             },
             onSave = { saved ->
-                onSaveDeacon(saved)
+                val finalSaved = if (isRestrictedServant && servantGrade != null) saved.copy(grade = servantGrade) else saved
+                onSaveDeacon(finalSaved)
                 isCreatingNew = false
                 deaconToEdit = null
             }
@@ -727,6 +770,7 @@ fun DeaconItemCard(
 fun DeaconEditorDialog(
     deacon: Deacon,
     isNew: Boolean,
+    isGradeLocked: Boolean = false,
     onDismiss: () -> Unit,
     onSave: (Deacon) -> Unit
 ) {
@@ -793,26 +837,33 @@ fun DeaconEditorDialog(
                 Box(modifier = Modifier.fillMaxWidth()) {
                     var showGradeDropdown by remember { mutableStateOf(false) }
                     OutlinedTextField(
-                        value = "${grade.arabicTitle} (${grade.stage})",
+                        value = "${grade.arabicTitle} (${grade.stage})" + if (isGradeLocked) " 🔒 (فصلك المخصص)" else "",
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("الفصل الدراسي / المرحلة *") },
+                        label = { Text(if (isGradeLocked) "الفصل الدراسي (محدد لك كخادم) *" else "الفصل الدراسي / المرحلة *") },
+                        trailingIcon = {
+                            if (isGradeLocked) {
+                                Icon(Icons.Default.School, contentDescription = null, tint = ModernPrimary)
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { showGradeDropdown = true }
+                            .clickable(enabled = !isGradeLocked) { showGradeDropdown = true }
                     )
-                    DropdownMenu(
-                        expanded = showGradeDropdown,
-                        onDismissRequest = { showGradeDropdown = false }
-                    ) {
-                        DeaconGrade.values().forEach { g ->
-                            DropdownMenuItem(
-                                text = { Text("${g.arabicTitle} - ${g.stage}") },
-                                onClick = {
-                                    grade = g
-                                    showGradeDropdown = false
-                                }
-                            )
+                    if (!isGradeLocked) {
+                        DropdownMenu(
+                            expanded = showGradeDropdown,
+                            onDismissRequest = { showGradeDropdown = false }
+                        ) {
+                            DeaconGrade.values().forEach { g ->
+                                DropdownMenuItem(
+                                    text = { Text("${g.arabicTitle} - ${g.stage}") },
+                                    onClick = {
+                                        grade = g
+                                        showGradeDropdown = false
+                                    }
+                                )
+                            }
                         }
                     }
                 }

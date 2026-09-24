@@ -8,11 +8,11 @@ import androidx.compose.ui.graphics.Color
 // كحلي ملكي عميق (Midnight Navy) + ذهبي وقاد (Radiant Gold & Amber) + أبيض ناصع
 // ========================================================
 
-// 1. ألوان اللوجو الأساسية: كحلي داكن ملكي من شريط اللوجو
-val ModernPrimary = Color(0xFF001F54) // كحلي عميق ملكي
-val ModernPrimaryDark = Color(0xFF001236)
-val ModernPrimaryLight = Color(0xFF0A2E7A)
-val ModernPrimaryContainer = Color(0xFFF0F4FA)
+// 1. ألوان اللوجو الرسمية: نبيتي ملكي داكن وعميق
+val ModernPrimary = Color(0xFF3B0A12) // نبيتي داكن ملكي مطابق للشعار
+val ModernPrimaryDark = Color(0xFF220308)
+val ModernPrimaryLight = Color(0xFF5C101D)
+val ModernPrimaryContainer = Color(0xFFFDF2F4)
 
 // 2. ألوان الهالة والكتابة: ذهبي وقاد مشرق وعنبر برتقالي
 val ModernAccent = Color(0xFFF59E0B) // ذهبي طقسي مشرق
@@ -31,7 +31,7 @@ val CleanBorder = Color(0xFFE2E8F0) // حدود فائقة الرقة 1dp ناع
 val CleanBorderSubtle = Color(0xFFF1F5F9)
 
 // 4. ألوان النصوص والتباين البصري
-val TextPrimary = Color(0xFF001F54) // كحلي عميق مقروء بوضوح فائق
+val TextPrimary = Color(0xFF220308) // داكن عميق مقروء بوضوح فائق ومريح للعين
 val TextSecondary = Color(0xFF475569) // رمادي أزرق هادئ ومريح
 val TextMuted = Color(0xFF94A3B8)
 

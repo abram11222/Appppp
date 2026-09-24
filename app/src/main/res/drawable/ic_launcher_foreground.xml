@@ -1,74 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Saint Stephen Deacons Service Emblem within 66dp safe zone (21 to 87) -->
+    <!-- Coptic Orthodox Deacons Service Emblem Foreground (Strictly inside 66dp safe zone: 21 to 87) -->
 
-    <!-- Radiant Golden-Orange Arch Halo -->
+    <!-- Sunburst Radiance behind cross -->
     <path
-        android:strokeWidth="5"
-        android:strokeColor="#FFB800"
-        android:fillColor="#00000000"
-        android:pathData="M33,62 C30,42 42,28 54,28 C66,28 78,42 75,62" />
+        android:strokeColor="#55FBBF24"
+        android:strokeWidth="0.8"
+        android:pathData="M54,23 L54,34 M54,54 L54,43 M32,32 L40,40 M76,32 L68,40 M23,43 L34,43 M85,43 L74,43 M28,52 L37,48 M80,52 L71,48" />
 
-    <!-- Top Ornate Coptic Cross -->
+    <!-- Draped Liturgical Red Vestment Ribbon behind Cross -->
     <path
-        android:pathData="M52,20 h4 v14 h-4 z"
-        android:fillColor="#FFFFFF" />
-    <path
-        android:pathData="M47,25 h14 v4 h-14 z"
-        android:fillColor="#FFFFFF" />
-    <!-- Coptic cross center circle -->
-    <path
-        android:fillColor="#FFB800"
-        android:pathData="M54,27m-2.5,0a2.5,2.5 0,1,1 5,0a2.5,2.5 0,1,1 -5,0" />
-    <!-- Cross ray tips -->
-    <path android:fillColor="#FFFFFF" android:pathData="M54,19m-1.5,0a1.5,1.5 0,1,1 3,0a1.5,1.5 0,1,1 -3,0" />
-    <path android:fillColor="#FFFFFF" android:pathData="M54,35m-1.5,0a1.5,1.5 0,1,1 3,0a1.5,1.5 0,1,1 -3,0" />
-    <path android:fillColor="#FFFFFF" android:pathData="M46,27m-1.5,0a1.5,1.5 0,1,1 3,0a1.5,1.5 0,1,1 -3,0" />
-    <path android:fillColor="#FFFFFF" android:pathData="M62,27m-1.5,0a1.5,1.5 0,1,1 3,0a1.5,1.5 0,1,1 -3,0" />
+        android:fillColor="#881337"
+        android:strokeColor="#D97706"
+        android:strokeWidth="0.6"
+        android:pathData="M35,35 Q54,50 73,35 L70,42 Q54,56 38,42 Z" />
 
-    <!-- Saint Stephen's Halo -->
+    <!-- Central Ornate Coptic Cross -->
+    <!-- Vertical Arm -->
     <path
-        android:strokeWidth="1.5"
-        android:strokeColor="#FFB800"
-        android:fillColor="#FFFFFF"
-        android:pathData="M54,42m-10,0a10,10 0,1,1 20,0a10,10 0,1,1 -20,0" />
-
-    <!-- Saint's Head -->
+        android:fillColor="#FBBF24"
+        android:strokeColor="#B45309"
+        android:strokeWidth="0.6"
+        android:pathData="M52.5,24 h3 v26 h-3 z" />
+    <!-- Horizontal Arm -->
     <path
-        android:strokeWidth="1.2"
-        android:strokeColor="#001F54"
-        android:fillColor="#FFFFFF"
-        android:pathData="M54,42m-6,0a6,6 0,1,1 12,0a6,6 0,1,1 -12,0" />
+        android:fillColor="#FBBF24"
+        android:strokeColor="#B45309"
+        android:strokeWidth="0.6"
+        android:pathData="M41,35.5 h26 v3 h-26 z" />
 
-    <!-- Deacon White Tunic (Tonia) kneeling -->
+    <!-- Coptic Cross Trefoil Finials -->
+    <!-- Top Finial -->
+    <path android:fillColor="#FDE047" android:pathData="M54,22 m-2.2,0 a2.2,2.2 0 1,1 4.4,0 a2.2,2.2 0 1,1 -4.4,0" />
+    <path android:fillColor="#F59E0B" android:pathData="M51.5,23.5 m-1.5,0 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0" />
+    <path android:fillColor="#F59E0B" android:pathData="M56.5,23.5 m-1.5,0 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0" />
+    <!-- Left Finial -->
+    <path android:fillColor="#FDE047" android:pathData="M39.5,37 m-2.2,0 a2.2,2.2 0 1,1 4.4,0 a2.2,2.2 0 1,1 -4.4,0" />
+    <path android:fillColor="#F59E0B" android:pathData="M41,34.5 m-1.5,0 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0" />
+    <path android:fillColor="#F59E0B" android:pathData="M41,39.5 m-1.5,0 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0" />
+    <!-- Right Finial -->
+    <path android:fillColor="#FDE047" android:pathData="M68.5,37 m-2.2,0 a2.2,2.2 0 1,1 4.4,0 a2.2,2.2 0 1,1 -4.4,0" />
+    <path android:fillColor="#F59E0B" android:pathData="M67,34.5 m-1.5,0 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0" />
+    <path android:fillColor="#F59E0B" android:pathData="M67,39.5 m-1.5,0 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0" />
+
+    <!-- Cross Center Medallion with Ruby Gem -->
     <path
-        android:fillColor="#FFFFFF"
-        android:strokeColor="#001F54"
-        android:strokeWidth="1.2"
-        android:pathData="M48,47 L36,56 L33,54 L36,60 L41,63 C40,74 44,81 54,81 C64,81 68,74 67,63 L72,60 L75,54 L72,56 L60,47 Z" />
+        android:fillColor="#FEF08A"
+        android:strokeColor="#92400E"
+        android:strokeWidth="0.8"
+        android:pathData="M54,37 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0" />
+    <path
+        android:fillColor="#991B1B"
+        android:pathData="M54,37 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0" />
 
-    <!-- Deacon Embroidered Stole (Batrasheel) -->
+    <!-- Left: Sacred Coptic Censer (Shorya) with Chains & Smoke -->
+    <!-- Incense Smoke -->
+    <path
+        android:strokeColor="#88FFFFFF"
+        android:strokeWidth="0.7"
+        android:pathData="M31,34 C30,30 33,28 31,25" />
+    <!-- Chains -->
+    <path
+        android:strokeColor="#F59E0B"
+        android:strokeWidth="0.6"
+        android:pathData="M30,33 L32,49 M33,33 L33,49 M36,33 L34,49" />
+    <!-- Dome & Bowl -->
+    <path
+        android:fillColor="#FBBF24"
+        android:strokeColor="#92400E"
+        android:strokeWidth="0.5"
+        android:pathData="M30,49 Q33,45 36,49 L36,54 Q33,57 30,54 Z" />
+    <!-- Censer Base -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M31,54 h4 v2 h-4 z" />
+
+    <!-- Right: Deacon Stole (Batrasheel) -->
+    <path
+        android:fillColor="#991B1B"
+        android:strokeColor="#F59E0B"
+        android:strokeWidth="0.6"
+        android:pathData="M70,33 h6 v28 h-6 z" />
+    <!-- Gold Crosses on Stole -->
+    <path
+        android:strokeColor="#FDE047"
+        android:strokeWidth="0.7"
+        android:pathData="M73,36 v4 M71.5,38 h3 M73,43 v4 M71.5,45 h3 M73,50 v4 M71.5,52 h3" />
+    <!-- Fringes/Tassels at Stole bottom -->
+    <path
+        android:strokeColor="#F59E0B"
+        android:strokeWidth="0.6"
+        android:pathData="M70.5,61 v3 M72,61 v3 M73.5,61 v3 M75,61 v3" />
+
+    <!-- Lower Right: Coptic Cymbals (الدف والصاجات) -->
+    <path
+        android:fillColor="#FBBF24"
+        android:strokeColor="#92400E"
+        android:strokeWidth="0.5"
+        android:pathData="M76,64 m-4,0 a4,3 0 1,1 8,0 a4,3 0 1,1 -8,0" />
+    <path
+        android:fillColor="#D97706"
+        android:pathData="M78,66 m-3.5,0 a3.5,2.5 0 1,1 7,0 a3.5,2.5 0 1,1 -7,0" />
+    <path
+        android:strokeColor="#78350F"
+        android:strokeWidth="0.8"
+        android:pathData="M78,64 L83,60" />
+
+    <!-- Center Base: Open Holy Gospel Book -->
+    <!-- Open Book Pages -->
     <path
         android:fillColor="#FFFBEB"
-        android:strokeColor="#001F54"
-        android:strokeWidth="1"
-        android:pathData="M51,48 h6 v31 h-6 z" />
-
-    <!-- Gold buckle at waist -->
+        android:strokeColor="#78350F"
+        android:strokeWidth="0.7"
+        android:pathData="M40,56 C45,55 50,56 53.5,58 L53.5,73 C50,71 45,70 40,71 Z" />
     <path
-        android:fillColor="#FFB800"
-        android:strokeColor="#001F54"
-        android:strokeWidth="0.8"
-        android:pathData="M54,62m-3,0a3,3 0,1,1 6,0a3,3 0,1,1 -6,0" />
-
-    <!-- Crosses on Batrasheel -->
+        android:fillColor="#FFFBEB"
+        android:strokeColor="#78350F"
+        android:strokeWidth="0.7"
+        android:pathData="M68,56 C63,55 58,56 54.5,58 L54.5,73 C58,71 63,70 68,71 Z" />
+    <!-- Book Spine -->
     <path
-        android:strokeColor="#001F54"
+        android:strokeColor="#92400E"
         android:strokeWidth="0.8"
-        android:pathData="M54,52 v4 M52,54 h4 M54,69 v4 M52,71 h4 M54,75 v4 M52,77 h4" />
+        android:pathData="M54,57 v17" />
+    <!-- Left Page Cross -->
+    <path
+        android:strokeColor="#991B1B"
+        android:strokeWidth="0.8"
+        android:pathData="M46.5,61 v6 M44.5,63 h4" />
+    <!-- Right Page Text lines (AGIO DIAK ONOC) -->
+    <path
+        android:strokeColor="#92400E"
+        android:strokeWidth="0.7"
+        android:pathData="M58,62 h6 M58,65 h6 M59,68 h4" />
+    <!-- Book Gilded Cover Edge -->
+    <path
+        android:strokeColor="#F59E0B"
+        android:strokeWidth="0.8"
+        android:pathData="M39,71.5 Q54,75 69,71.5" />
+
+    <!-- Bottom Decorative Coptic Star Accent -->
+    <path
+        android:fillColor="#FBBF24"
+        android:pathData="M54,77 L55.2,79.5 L58,80 L55.8,81.8 L56.5,84.5 L54,83 L51.5,84.5 L52.2,81.8 L50,80 L52.8,79.5 Z" />
 </vector>

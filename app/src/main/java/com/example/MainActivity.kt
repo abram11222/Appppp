@@ -114,7 +114,7 @@ fun DeaconsMainApp(viewModel: DeaconsViewModel) {
 
     // ViewModel States
     val deacons by viewModel.filteredDeacons.collectAsState()
-    val allDeacons by viewModel.deacons.collectAsState()
+    val allDeacons by viewModel.visibleDeacons.collectAsState()
     val currentServant by viewModel.currentServant.collectAsState()
     val servants by viewModel.servants.collectAsState()
     val syncState by viewModel.syncState.collectAsState()
@@ -325,6 +325,7 @@ fun DeaconsMainApp(viewModel: DeaconsViewModel) {
                     0 -> DeaconsScreen(
                         deacons = deacons,
                         allDeacons = allDeacons,
+                        currentServant = currentServant,
                         attendanceList = attendanceList,
                         searchQuery = searchQuery,
                         sortOrder = sortOrder,
